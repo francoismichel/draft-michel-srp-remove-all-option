@@ -1,0 +1,120 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2025-10-19T01:20:30.526967+00:00",
+  "repo": "francoismichel/draft-michel-srp-remove-all-option",
+  "labels": [
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "documentation",
+      "description": "Improvements or additions to documentation",
+      "color": "0075ca"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    }
+  ],
+  "issues": [
+    {
+      "number": 1,
+      "id": "I_kwDOQDjFn87SHhKA",
+      "title": "wrong venue",
+      "url": "https://github.com/francoismichel/draft-michel-srp-remove-all-option/issues/1",
+      "state": "OPEN",
+      "author": "francoismichel",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "It seems that something went wrong in commit d224c79 which is an automated commit made by running `make -f lib/setup.mk` when using martinthomson/i-d-template.\nI don't know what happened, but something in that script identified the WG as the Spatial Reuse Protocol (SRP) instead of DNSSD.\nSo we can either ask for a presentation at the Spatial Reuse Protocol WG or update the venue of this draft. I propose the latter... :-)  ",
+      "createdAt": "2025-10-17T09:10:04Z",
+      "updatedAt": "2025-10-18T09:52:19Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "Abhayakara",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Huh, interestingly, it's often the case that space is leased, just like SRP registrations. Maybe there's an opportunity for additional use cases here...",
+          "createdAt": "2025-10-18T09:52:18Z",
+          "updatedAt": "2025-10-18T09:52:18Z"
+        }
+      ]
+    }
+  ],
+  "pulls": [
+    {
+      "number": 2,
+      "id": "PR_kwDOQDjFn86uZIel",
+      "title": "Editorial text updates; and rephrasing of 'delete' operation to multiple delete operations; added benefit of deleting all services but keeping the name.",
+      "url": "https://github.com/francoismichel/draft-michel-srp-remove-all-option/pull/2",
+      "state": "OPEN",
+      "author": "EskoDijk",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-10-17T21:51:41Z",
+      "updatedAt": "2025-10-18T09:43:27Z",
+      "baseRepository": "francoismichel/draft-michel-srp-remove-all-option",
+      "baseRefName": "main",
+      "baseRefOid": "d224c798898afa7af9dfef1607d1aee13cee248b",
+      "headRepository": "EskoDijk/draft-michel-srp-remove-all-option",
+      "headRefName": "pr-editorial",
+      "headRefOid": "b598eb4cc736ed8ecd07b8d02620c339beb5bc92",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOQDjFn87H2l8C",
+          "commit": {
+            "abbreviatedOid": "b598eb4"
+          },
+          "author": "Abhayakara",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-10-18T09:43:27Z",
+          "updatedAt": "2025-10-18T09:43:27Z",
+          "comments": []
+        }
+      ]
+    }
+  ]
+}

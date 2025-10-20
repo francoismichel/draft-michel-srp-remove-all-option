@@ -40,6 +40,10 @@ author:
     fullname: François Michel
     organization: Apple
     email: f_michel@apple.com
+ -
+    fullname: Esko Dijk
+    organization: IoTconsultancy.nl
+    email: esko.dijk@iotconsultancy.nl
 
 normative:
    SRP: RFC9665

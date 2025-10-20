@@ -27,8 +27,13 @@ docname: draft-michel-srp-remove-all-latest
 number:
 date:
 v: 3
-area: INT
-workgroup: dnssd
+area: Internet
+wg: DNSSD
+venue:
+  group: DNSSD
+  type: Working Group
+  mail: dnssd@ietf.org
+  arch: https://mailarchive.ietf.org/arch/browse/dnssd/
 keyword:
  - SRP
  - remove

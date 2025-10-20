@@ -2,7 +2,7 @@
 
 
 
-dnssd                                                          F. Michel
+DNSSD                                                          F. Michel
 Internet-Draft                                                     Apple
 Intended status: Standards Track                                 E. Dijk
 Expires: 23 April 2026                                 IoTconsultancy.nl
@@ -20,15 +20,17 @@ Abstract
    requester to replace all its previous service registrations with new
    ones using a single SRP Update.
 
-Discussion Venues
+About This Document
 
    This note is to be removed before publishing as an RFC.
 
-   Discussion of this document takes place on the Spatial Reuse Protocol
-   Working Group mailing list (), which is archived at .
+   Status information for this document may be found at
+   https://datatracker.ietf.org/doc/draft-michel-srp-remove-all/.
 
-   Source for this draft and an issue tracker can be found at
-   https://github.com/francoismichel/draft-michel-srp-remove-all-option.
+   Discussion of this document takes place on the DNSSD Working Group
+   mailing list (mailto:dnssd@ietf.org), which is archived at
+   https://mailarchive.ietf.org/arch/browse/dnssd/.  Subscribe at
+   https://www.ietf.org/mailman/listinfo/dnssd/.
 
 Status of This Memo
 

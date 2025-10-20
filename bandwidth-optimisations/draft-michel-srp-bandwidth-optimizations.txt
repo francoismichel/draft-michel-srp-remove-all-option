@@ -1,0 +1,256 @@
+
+
+
+
+DNSSD                                                          F. Michel
+Internet-Draft                                                     Apple
+Intended status: Standards Track                                 E. Dijk
+Expires: 23 April 2026                                 IoTconsultancy.nl
+                                                         20 October 2025
+
+
+               Bandwidth optimization extensions for SRP
+            draft-michel-srp-bandwidth-optimizations-latest
+
+Abstract
+
+   This document describes a new EDNS(0) option for an SRP Update to
+   remove all previously registered services for a hostname before
+   adding new services for that same hostname.  This allows an SRP
+   requester to replace all its previous service registrations with new
+   ones using a single SRP Update.
+
+About This Document
+
+   This note is to be removed before publishing as an RFC.
+
+   Status information for this document may be found at
+   https://datatracker.ietf.org/doc/draft-michel-srp-bandwidth-
+   optimizations/.
+
+   Discussion of this document takes place on the DNSSD Working Group
+   mailing list (mailto:dnssd@ietf.org), which is archived at
+   https://mailarchive.ietf.org/arch/browse/dnssd/.  Subscribe at
+   https://www.ietf.org/mailman/listinfo/dnssd/.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 23 April 2026.
+
+Copyright Notice
+
+   Copyright (c) 2025 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
+
+Table of Contents
+
+   1.  Introduction
+   2.  Conventions and Definitions
+   3.  The SRP Optimisations EDNS(0) option
+   4.  Server-side processing of the SRP Optimisations Option
+     4.1.  Processing K=1
+     4.2.  Processing R=1
+       4.2.1.  Error when processing "Delete All RRsets From A Name"
+       4.2.2.  Error when processing the SRP Update
+   5.  Security Considerations
+   6.  IANA Considerations
+   7.  Normative References
+   Acknowledgments
+   Authors' Addresses
+
+1.  Introduction
+
+   Some constrained devices may not afford storing the services, that
+   they have currently registered to an SRP [SRP] registrar, in
+   persistent memory.  Instead, they only store their hostname and their
+   SRP public/private key pair.  Upon a reboot, they ensure no stale
+   service registrations remain on the SRP registrar by first sending an
+   SRP Update to remove all their previously registered services per
+   Section 3.2.5.5.1 of [SRP].  Once that is done, they register their
+   current services through another SRP Update.  Since removing all
+   services requires the lease time in the Update Lease option to be
+   zero, and adding any service(s) requires the same option to have a
+   nonzero lease value, SRP effectively prevents the removal of all
+   previous services and registering new services for a same hostname in
+   the same Update (Section 3.2.5.5.1 of [SRP]).  Therefore, this has to
+   be done using two separate, successive SRP Updates.
+
+   This document defines a new EDNS(0) [EDNS0] option called SRP
+   Optimizations for SRP Updates to require smaller data exchanges.  The
+   option enables omitting the key in an update, making the update
+   significantly smaller without compromising the security guarantees of
+   SRP updates.  It also allows including the previous services removal
+   operation in the same SRP Update that registers the new services.
+   This also allows an SRP requester to send a single SRP Update that
+   removes all its registered services, while keeping its hostname
+   registered, which is not possible currently with [SRP].  This
+   significantly reduces the amount of data transmitted over the network
+   for doing these operations and reduces the risk of congestion caused
+   by the operation of SRP in constrained networks.
+
+2.  Conventions and Definitions
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in
+   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+3.  The SRP Optimisations EDNS(0) option
+
+   The SRP Optimisations Option contains the following one-byte bitmap:
+
+   +---------------+
+   |7|6|5|4|3|2|1|0|
+   +---------------+
+   | (Reserved)|K|R|
+   +---------------+
+
+   *  R: When set in an SRP Update for a particular hostname (as defined
+      in the Host Description Instruction) it signals to the registrar
+      to first remove all published services for that hostname before
+      processing the Service Discovery Instructions and Service
+      Description Instructions contained in the Update.  It is almost
+      equivalent to first sending an SRP Update as defined by
+      Section 3.2.5.5.1 of [SRP] before sending this Update.  The only
+      difference is that when the SRP Optimisations Option is used, the
+      "Removing All Published Services" operation and the subsequent SRP
+      Update are considered as a single atomic transaction that either
+      entirely succeeds, or fails.
+
+   *  K: When set, it signals that the key record for the hostname is
+      omitted, asking the SRP registrar to use the key it has in its
+      local database for verifying the Update signature.
+
+4.  Server-side processing of the SRP Optimisations Option
+
+   This server describes the server-side behaviour when processing the
+   option.  Every flag of the option is processed independently by the
+   server.  In response to an Update containing the SRP Optimisations
+   Option, the SRP registrar MUST include the option to indicate that
+   the option is supported.  The value of the K and R flags in the
+   response depends on the success of the corresponding operations.
+   This is done regardless of whether any of the additional operations
+   induced by the option, or the instructions contained in the SRP
+   Update, succeed or fail.
+
+4.1.  Processing K=1
+
+   An SRP Update carrying the SRP Optimisations Option with K=1 does not
+   contain any KEY RR.  The SRP registrar retrieves the public key
+   associated with the Host Description Instruction in its local
+   database.  The keytag of the SIG(0) RR and the hostname can be used
+   to identify the signer's public key more precisely.  If the SRP
+   registrar cannot disambiguate the right key among several, it MAY try
+   the different keys until one validates the signature correctly.  If
+   no key successfully validates the signature, the registrar MUST stop
+   processing the SRP update, reject the SRP Update as defined in [SRP]
+   and set the K=1 to signal the error.
+
+4.2.  Processing R=1
+
+   Upon receiving a valid SRP Update containing the SRP Optimisations
+   Option with R set to 1, the SRP registrar first removes all service
+   registrations for the hostname in the Host Description Instruction.
+   This includes all SRV/TXT records for all service instance names of
+   which the SRV record has this hostname as a target.  It also includes
+   all PTR records that point to these service instance names.  Then, it
+   processes the remaining instructions of the SRP Update as defined by
+   [SRP].
+
+4.2.1.  Error when processing "Delete All RRsets From A Name"
+
+   If the "Delete All RRsets From A Name" operations induced by R=1
+   results in an error on the SRP registrar, it SHOULD immediately stop
+   processing the SRP Update.  The registrar MUST return the adequate
+   response code as it would have done in [SRP] when processing a
+   regular "Delete All RRsets From A Name" and set R=1 in the response
+   to signal that an error occurred when processing this operation.
+
+4.2.2.  Error when processing the SRP Update
+
+   If all the "Delete All RRsets From A Name" operations implied by R=1
+   succeed, but the subsequent SRP Update processing fails, then all the
+   implied "Delete All RRsets From A Name" operations are undone and the
+   adequate error response code for the SRP Update failure is returned
+   as defined by [SRP].  The response is sent with the R bit set to 0.
+
+5.  Security Considerations
+
+   TODO: security considerations for K=1
+
+   The "Remove All Services" operation induced by R=1 relies on existing
+   security mechanisms defined in [SRP].  The SRP requester MUST be
+   properly authenticated for the hostname contained in the Host
+   Description Instruction before the SRP registrar processes the
+   "Delete All RRsets From A Name" operations induced by the option.
+
+   Since an SRP attacker can replay any SRP Update, it can also replay
+   the "Delete All RRsets From A Name" operations induced by the option.
+
+6.  IANA Considerations
+
+   IANA is requested to allocate a new OPT RR option code from the DNS
+   EDNS0 Option Codes (OPT) registry for the 'SRP Optimisations' Option.
+   The Name shall be 'SRP-OPTI'.  The value shall be allocated by IANA.
+   The meaning shall be 'SRP Optimisations'.  Reference shall refer to
+   this document, once published.  IANA shall determine the registration
+   date.
+
+7.  Normative References
+
+   [EDNS0]    Damas, J., Graff, M., and P. Vixie, "Extension Mechanisms
+              for DNS (EDNS(0))", STD 75, RFC 6891,
+              DOI 10.17487/RFC6891, April 2013,
+              <https://www.rfc-editor.org/rfc/rfc6891>.
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/rfc/rfc2119>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+   [SRP]      Lemon, T. and S. Cheshire, "Service Registration Protocol
+              for DNS-Based Service Discovery", RFC 9665,
+              DOI 10.17487/RFC9665, June 2025,
+              <https://www.rfc-editor.org/rfc/rfc9665>.
+
+Acknowledgments
+
+   TODO acknowledge.
+
+Authors' Addresses
+
+   François Michel
+   Apple
+   Email: f_michel@apple.com
+
+
+   Esko Dijk
+   IoTconsultancy.nl
+   Email: esko.dijk@iotconsultancy.nl

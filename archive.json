@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-10-19T01:20:30.526967+00:00",
+  "timestamp": "2025-10-21T01:14:41.791754+00:00",
   "repo": "francoismichel/draft-michel-srp-remove-all-option",
   "labels": [
     {
@@ -62,7 +62,7 @@
       "labels": [],
       "body": "It seems that something went wrong in commit d224c79 which is an automated commit made by running `make -f lib/setup.mk` when using martinthomson/i-d-template.\nI don't know what happened, but something in that script identified the WG as the Spatial Reuse Protocol (SRP) instead of DNSSD.\nSo we can either ask for a presentation at the Spatial Reuse Protocol WG or update the venue of this draft. I propose the latter... :-)  ",
       "createdAt": "2025-10-17T09:10:04Z",
-      "updatedAt": "2025-10-18T09:52:19Z",
+      "updatedAt": "2025-10-20T19:59:18Z",
       "closedAt": null,
       "comments": [
         {
@@ -71,6 +71,20 @@
           "body": "Huh, interestingly, it's often the case that space is leased, just like SRP registrations. Maybe there's an opportunity for additional use cases here...",
           "createdAt": "2025-10-18T09:52:18Z",
           "updatedAt": "2025-10-18T09:52:18Z"
+        },
+        {
+          "author": "EskoDijk",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@francoismichel If it helps, I use the following header and venue info in another (TSR) draft:\n\n\n```\ndocname: draft-ietf-dnssd-tsr-latest\nsubmissiontype: IETF  # also: \"independent\", \"editorial\", \"IAB\", or \"IRTF\"\nnumber:\ndate:\nconsensus: true\nv: 3\narea: int\nworkgroup: dnssd\nkeyword:\n - mDNS\n - TSR\n - conflict resolution\n - EDNS\n - DNS\nvenue:\n  group: WG\n  type: Working Group\n  mail: dnssd@ietf.org\n  arch: https://mailarchive.ietf.org/arch/browse/dnssd/\n  github: dnssd-wg/draft-ietf-dnssd-tsr\n  latest: https://datatracker.ietf.org/doc/html/draft-ietf-dnssd-tsr\n```\n\n",
+          "createdAt": "2025-10-20T19:33:10Z",
+          "updatedAt": "2025-10-20T19:33:10Z"
+        },
+        {
+          "author": "francoismichel",
+          "authorAssociation": "OWNER",
+          "body": "Thanks Esko!",
+          "createdAt": "2025-10-20T19:59:18Z",
+          "updatedAt": "2025-10-20T19:59:18Z"
         }
       ]
     }
@@ -81,25 +95,42 @@
       "id": "PR_kwDOQDjFn86uZIel",
       "title": "Editorial text updates; and rephrasing of 'delete' operation to multiple delete operations; added benefit of deleting all services but keeping the name.",
       "url": "https://github.com/francoismichel/draft-michel-srp-remove-all-option/pull/2",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "EskoDijk",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2025-10-17T21:51:41Z",
-      "updatedAt": "2025-10-18T09:43:27Z",
+      "updatedAt": "2025-10-20T15:27:12Z",
       "baseRepository": "francoismichel/draft-michel-srp-remove-all-option",
       "baseRefName": "main",
       "baseRefOid": "d224c798898afa7af9dfef1607d1aee13cee248b",
       "headRepository": "EskoDijk/draft-michel-srp-remove-all-option",
       "headRefName": "pr-editorial",
-      "headRefOid": "b598eb4cc736ed8ecd07b8d02620c339beb5bc92",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
+      "headRefOid": "74af831a915053f4488ac7a97bb100181bebad2c",
+      "closedAt": "2025-10-20T15:27:12Z",
+      "mergedAt": "2025-10-20T15:27:12Z",
+      "mergedBy": "francoismichel",
+      "mergeCommit": {
+        "oid": "7e29f33add864482e6cc0db21e2588027f034a97"
+      },
+      "comments": [
+        {
+          "author": "francoismichel",
+          "authorAssociation": "OWNER",
+          "body": "@EskoDijk Can you use that PR to also add yourself to the draft authors ?",
+          "createdAt": "2025-10-20T01:27:47Z",
+          "updatedAt": "2025-10-20T01:27:47Z"
+        },
+        {
+          "author": "EskoDijk",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> @EskoDijk Can you use that PR to also add yourself to the draft authors ?\r\n\r\n@francoismichel  Yes, have now added my name there.",
+          "createdAt": "2025-10-20T10:00:01Z",
+          "updatedAt": "2025-10-20T10:00:01Z"
+        }
+      ],
       "reviews": [
         {
           "id": "PRR_kwDOQDjFn87H2l8C",
@@ -115,6 +146,32 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 3,
+      "id": "PR_kwDOQDjFn86uuik7",
+      "title": "Rename the option to \"SRP Optimisations Option\" and the ability to omit keys",
+      "url": "https://github.com/francoismichel/draft-michel-srp-remove-all-option/pull/3",
+      "state": "OPEN",
+      "author": "francoismichel",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "The option now becomes a bitmap that signals what optimizations we want to enable in our request.\r\nOnly 2 bits are defined right now: R signals that we want to remove all services for this hostname, and K signals that we omit the key in the update.\r\n\r\nI am not too sure about the name, it almost makes me want to call it SRP Options but at the same time, it could get confused with DNS OPT records, and it really broadens the scope of the document.",
+      "createdAt": "2025-10-20T23:03:37Z",
+      "updatedAt": "2025-10-20T23:03:37Z",
+      "baseRepository": "francoismichel/draft-michel-srp-remove-all-option",
+      "baseRefName": "main",
+      "baseRefOid": "cb98436f04c6266f4e032b53bca368ebe5678609",
+      "headRepository": "francoismichel/draft-michel-srp-remove-all-option",
+      "headRefName": "bandwidth-optimisations",
+      "headRefOid": "b1ec5aff0c60d70237bf300990927419a7bd1b26",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }

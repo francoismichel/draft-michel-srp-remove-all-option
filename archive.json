@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-10-21T01:14:41.791754+00:00",
+  "timestamp": "2025-10-26T01:18:40.353544+00:00",
   "repo": "francoismichel/draft-michel-srp-remove-all-option",
   "labels": [
     {
@@ -87,6 +87,22 @@
           "updatedAt": "2025-10-20T19:59:18Z"
         }
       ]
+    },
+    {
+      "number": 4,
+      "id": "I_kwDOQDjFn87TqjyR",
+      "title": "Define what to do when the Remove All option is used in a Remove All update (i.e. update with lease==0)",
+      "url": "https://github.com/francoismichel/draft-michel-srp-remove-all-option/issues/4",
+      "state": "OPEN",
+      "author": "francoismichel",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "It should be pretty simple, like \"the option is ignored\" since both the option and the Remove All packet do the same thing.\nWe could also be more strict and simply forbid the inclusion of the RemoveAll option in a zero-lease packet, following some principles from https://datatracker.ietf.org/doc/html/rfc9413#name-harmful-consequences-of-tol. I slightly prefer this option but we don't necessarily have to do this.",
+      "createdAt": "2025-10-24T22:02:19Z",
+      "updatedAt": "2025-10-24T22:02:25Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -159,7 +175,7 @@
       "labels": [],
       "body": "The option now becomes a bitmap that signals what optimizations we want to enable in our request.\r\nOnly 2 bits are defined right now: R signals that we want to remove all services for this hostname, and K signals that we omit the key in the update.\r\n\r\nI am not too sure about the name, it almost makes me want to call it SRP Options but at the same time, it could get confused with DNS OPT records, and it really broadens the scope of the document.",
       "createdAt": "2025-10-20T23:03:37Z",
-      "updatedAt": "2025-10-20T23:03:37Z",
+      "updatedAt": "2025-10-24T10:47:26Z",
       "baseRepository": "francoismichel/draft-michel-srp-remove-all-option",
       "baseRefName": "main",
       "baseRefOid": "cb98436f04c6266f4e032b53bca368ebe5678609",
@@ -171,7 +187,28 @@
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOQDjFn87JNRB0",
+          "commit": {
+            "abbreviatedOid": "b1ec5af"
+          },
+          "author": "EskoDijk",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-24T10:47:26Z",
+          "updatedAt": "2025-10-24T10:47:26Z",
+          "comments": [
+            {
+              "originalPosition": 22,
+              "body": "I would prefer some other term than \"bandwidth\" here; it sounds very radio-specific.\r\nAlternatives:\r\n\"Message size optimization extensions for SRP\"\r\n\"Message size optimizations for SRP\"\r\n\"Size optimizations for SRP\"\r\n\"Size optimization extensions for SRP\"\r\n\"Data size optimization extensions for SRP\"\r\n(etc)\r\n\r\nMore accurate terms are \"data size\", \"message size\", \"size\", \"message length\", or \"overhead\".",
+              "createdAt": "2025-10-24T10:47:26Z",
+              "updatedAt": "2025-10-24T10:47:27Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
